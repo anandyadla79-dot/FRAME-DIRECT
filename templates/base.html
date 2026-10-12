@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Buy fresh farm products directly from local farmers.">
+  <title>{% block title %}Farm Direct{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="navbar">
+    <a class="brand" href="{{ url_for('index') }}">🌱 Farm Direct</a>
+    <nav>
+      <a href="{{ url_for('index') }}">Marketplace</a>
+      <a class="nav-button" href="{{ url_for('add_product') }}">+ Add Product</a>
+    </nav>
+  </header>
+  <main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer>🌿 Farm Direct · Supporting farmers, connecting communities</footer>
+</body>
+</html>

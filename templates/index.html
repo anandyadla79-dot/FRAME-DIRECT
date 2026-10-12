@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Farm Direct | Fresh from Farmers{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-copy">
+    <span class="eyebrow">FRESH · LOCAL · DIRECT</span>
+    <h1>From the farm<br>straight to you.</h1>
+    <p>Discover fresh agricultural products and connect directly with the people who grow them.</p>
+    <a class="button" href="{{ url_for('add_product') }}">List your products →</a>
+  </div>
+  <div class="hero-art" aria-label="Fresh vegetables illustration">🥬 🍅 🌾</div>
+</section>
+
+<section class="section-heading">
+  <div>
+    <h2>Marketplace</h2>
+    <p>Explore products shared by local farmers.</p>
+  </div>
+  <span class="count">{{ products|length }} product{% if products|length != 1 %}s{% endif %}</span>
+</section>
+
+<form class="search-form" action="{{ url_for('index') }}" method="get">
+  <input type="search" name="search" value="{{ search }}" placeholder="Search product, category, or location..." aria-label="Search products">
+  <button class="button" type="submit">Search</button>
+  {% if search %}<a class="clear-link" href="{{ url_for('index') }}">Clear</a>{% endif %}
+</form>
+
+{% if products %}
+<div class="product-grid">
+  {% for product in products %}
+  <article class="product-card">
+    <div class="product-icon">
+      {% if product.category|lower == 'fruits' %}🍎
+      {% elif product.category|lower == 'vegetables' %}🥕
+      {% elif product.category|lower == 'grains' %}🌾
+      {% else %}🌱{% endif %}
+      <span>{{ product.category }}</span>
+    </div>
+    <div class="product-body">
+      <div class="product-title-row">
+        <h3>{{ product.name }}</h3>
+        <strong class="price">₹{{ "%.2f"|format(product.price) }}<small>/kg</small></strong>
+      </div>
+      <p class="description">{{ product.description or "Fresh farm product, available now." }}</p>
+      <p class="detail">📍 {{ product.location }}</p>
+      <p class="detail">📦 {{ product.quantity|round(2) }} kg available</p>
+      <div class="farmer-row">
+        <div class="avatar">{{ product.farmer_name[:1]|upper }}</div>
+        <div><strong>{{ product.farmer_name }}</strong><small>Farmer</small></div>
+      </div>
+      <a class="button contact-button" href="tel:{{ product.phone }}">☎ Contact farmer</a>
+      <p class="phone">{{ product.phone }}</p>
+      <form method="post" action="{{ url_for('delete_product', product_id=product.id) }}" onsubmit="return confirm('Delete this product listing?');">
+        <button class="delete-button" type="submit">Delete listing</button>
+      </form>
+    </div>
+  </article>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+  <div>🧺</div>
+  <h3>No products found</h3>
+  <p>{% if search %}Try another search term.{% else %}Be the first farmer to list a product.{% endif %}</p>
+  <a class="button" href="{{ url_for('add_product') }}">Add a product</a>
+</div>
+{% endif %}
+{% endblock %}

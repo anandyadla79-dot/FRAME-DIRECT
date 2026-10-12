@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Add Product | Farm Direct{% endblock %}
+{% block content %}
+<section class="form-intro">
+  <span class="eyebrow">GROW · SHARE · SELL</span>
+  <h1>List a farm product</h1>
+  <p>Share product details so customers can discover and contact you.</p>
+</section>
+<form class="product-form" method="post">
+  <div class="form-grid">
+    <label>Product name *
+      <input name="name" required maxlength="80" placeholder="e.g. Tomatoes">
+    </label>
+    <label>Category *
+      <select name="category" required>
+        <option value="">Choose category</option>
+        <option>Vegetables</option><option>Fruits</option><option>Grains</option>
+        <option>Pulses</option><option>Dairy</option><option>Other</option>
+      </select>
+    </label>
+    <label>Price per kg (₹) *
+      <input type="number" name="price" required min="0" step="0.01" placeholder="e.g. 30">
+    </label>
+    <label>Quantity available (kg) *
+      <input type="number" name="quantity" required min="0" step="0.1" placeholder="e.g. 100">
+    </label>
+    <label>Farmer name *
+      <input name="farmer_name" required maxlength="80" placeholder="Your name">
+    </label>
+    <label>Phone number *
+      <input name="phone" required maxlength="20" inputmode="tel" placeholder="Contact number">
+    </label>
+    <label class="full-width">Location *
+      <input name="location" required maxlength="100" placeholder="Village, town, or district">
+    </label>
+    <label class="full-width">Description
+      <textarea name="description" rows="4" maxlength="500" placeholder="Tell customers about your product..."></textarea>
+    </label>
+  </div>
+  <div class="form-actions">
+    <a class="button secondary" href="{{ url_for('index') }}">Cancel</a>
+    <button class="button" type="submit">Publish product</button>
+  </div>
+  <p class="form-note">* Required fields. Only publish contact details you are comfortable sharing publicly.</p>
+</form>
+{% endblock %}
